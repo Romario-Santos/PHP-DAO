@@ -5,6 +5,13 @@ class Usuario {
     private $dessenha;
     private $dtcadastro;
 
+
+    public function __construct($login = "",$senha = ""){
+    
+        $this->setLogin($login);
+        $this->setSenha($senha);
+    }
+
     public function getId(){
         return $this->idusuario;
     }
@@ -41,12 +48,9 @@ class Usuario {
       ));
       
       if(count($result) > 0){
-      $row = $result[0];
 
-      $this->setId($row['idusuario']);
-      $this->setLogin($row['deslogin']);
-      $this->setSenha($row['dessenha']);
-      $this->setDataCadastro(new DateTime($row['dtcadastro']));
+      $this->setData($result[0]);
+
       }
     
     }
@@ -85,16 +89,54 @@ class Usuario {
         ));
         
         if(count($result) > 0){
-        $row = $result[0];
-  
-        $this->setId($row['idusuario']);
-        $this->setLogin($row['deslogin']);
-        $this->setSenha($row['dessenha']);
-        $this->setDataCadastro(new DateTime($row['dtcadastro']));
+         
+            $this->setData($result[0]);
+
         }else{
             throw new Exception("LOGIN e/ou Senha Invalidos");
             
         }
+    }
+
+    public function setData($data){
+        $this->setId($data['idusuario']);
+        $this->setLogin($data['deslogin']);
+        $this->setSenha($data['dessenha']);
+        $this->setDataCadastro(new DateTime($data['dtcadastro']));
+    }
+
+    /**
+     * para fazer um insert criamos uma procedure no banco 
+     * para realizar essa ação
+     */
+    public function insert()
+    {
+        $sql = new Sql();
+        $result = $sql->select("CALL sp_usuario_insert(:LOGIN, :SENHA)", array(
+            ":LOGIN"=>$this->getLogin(),
+            ":SENHA"=>$this->getSenha()
+        ));
+
+        if(count($result) > 0){
+         
+            $this->setData($result[0]);
+
+        }
+    }
+
+    public function update($login,$senha){
+
+        $this->setLogin($login);
+        $this->setSenha($senha);
+
+        $sql = new Sql();
+
+        $sql->query("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :PASSWORD WHERE idusuario = :ID",array(
+            ":LOGIN"=>$this->getLogin(),
+            ":PASSWORD"=>$this->getSenha(),
+            ":ID"=>$this->getId()
+        ));
+
     }
 }
 ?>

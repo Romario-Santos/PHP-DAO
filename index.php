@@ -24,6 +24,17 @@ echo $usuario;
 
 
 //carrega um usuario usando um login e a senha
-$usuario = new Usuario();
-$usuario->login("Romario","1234");
-echo $usuario;
+//$usuario = new Usuario();
+//$usuario->login("Romario","1234");
+//echo $usuario;
+
+//INSERT USUARIO NOVO USANDO PROCIDE
+//$aluno = new Usuario("Lustoza","adef012340");
+//$aluno->insert();
+//echo $aluno;
+
+//update dados da tabela tb_usuarios
+$romario = new Usuario();
+$romario->loadById(2);
+$romario->update("Telma","45565");
+echo $romario;
