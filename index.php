@@ -34,7 +34,13 @@ echo $usuario;
 //echo $aluno;
 
 //update dados da tabela tb_usuarios
-$romario = new Usuario();
-$romario->loadById(2);
-$romario->update("Telma","45565");
-echo $romario;
+//$romario = new Usuario();
+//$romario->loadById(2);
+//$romario->update("Telma","45565");
+//echo $romario;
+
+//Deletar um usuario
+$usuario = new Usuario();
+$usuario->loadById(4);
+$usuario->delete();
+echo $usuario;

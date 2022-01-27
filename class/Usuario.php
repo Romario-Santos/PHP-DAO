@@ -138,5 +138,17 @@ class Usuario {
         ));
 
     }
+
+    public function delete(){
+        $sql = new Sql();
+        $sql->query("DELETE FROM tb_usuarios WHERE idusuario = :ID",array(
+            ":ID"=>$this->getId()
+        ));
+//zera dados do objeto
+        $this->setId(0);
+        $this->setLogin("");
+        $this->setSenha("");
+        $this->setDataCadastro(new DateTime());
+    }
 }
 ?>
